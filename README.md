@@ -1,3 +1,9 @@
+![Platform](https://img.shields.io/badge/Platform-ESP32-blue?logo=espressif&logoColor=white)
+![MQTT](https://img.shields.io/badge/Protocol-MQTT_3.1.1-orange?logo=eclipse-mosquitto&logoColor=white)
+![C++](https://img.shields.io/badge/Language-C%2B%2B-00599C?logo=c%2B%2B&logoColor=white)
+![Python](https://img.shields.io/badge/Language-Python-3776AB?logo=python&logoColor=white)
+![Arduino](https://img.shields.io/badge/IDE-Arduino-00979D?logo=arduino&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Completed-brightgreen)
 # ESP32 智能环境监测系统 (IoT)
 
 ## 📖 项目简介
