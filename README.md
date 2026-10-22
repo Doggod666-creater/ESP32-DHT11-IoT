@@ -7,7 +7,7 @@
 ### 📊 自动化测试报告
 <img width="1892" height="826" alt="pytest_test_report" src="https://github.com/user-attachments/assets/b61f195d-1820-4b8a-9168-d26598b3d86a" />
 ### 🖥️ 全栈数据可视化大屏
-<img width="918" height="795" alt="web_dashboard_normal" src="https://github.com/user-attachments/assets/94bf5933-b2bb-4627-aac8-5306ab4a8c19" />
+<img width="909" height="797" alt="屏幕截图_22-10-2026_233948_" src="https://github.com/user-attachments/assets/49f5c41e-dc40-472f-adac-1d4016e0ce6e" />
 # ESP32 智能环境监测系统 (IoT)
 
 ## 📖 项目简介
