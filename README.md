@@ -4,6 +4,11 @@
 ![Python](https://img.shields.io/badge/Language-Python-3776AB?logo=python&logoColor=white)
 ![Arduino](https://img.shields.io/badge/IDE-Arduino-00979D?logo=arduino&logoColor=white)
 ![Status](https://img.shields.io/badge/Status-Completed-brightgreen)
+### 📊 自动化测试报告
+![Pytest Report](./pytest_test_report.png)
+
+### 🖥️ 全栈数据可视化大屏
+![Web Dashboard](./web_dashboard_normal.png)
 # ESP32 智能环境监测系统 (IoT)
 
 ## 📖 项目简介
