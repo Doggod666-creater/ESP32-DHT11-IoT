@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>智能机房温湿度监控看板</title>
+    <!-- 引入 ECharts 图表库 -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <style>
+        body { background-color: #1e1e1e; color: #fff; font-family: 'Microsoft YaHei', sans-serif; text-align: center; margin: 0; padding: 20px; }
+        .card { background: #2d2d2d; border-radius: 10px; padding: 20px; margin: 10px; display: inline-block; width: 200px; box-shadow: 0 4px 8px rgba(0,0,0,0.5); transition: all 0.3s ease; }
+        .value { font-size: 40px; font-weight: bold; color: #4CAF50; margin-top: 10px; }
+        .alarm { color: #f44336 !important; animation: blink 1s infinite; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        #main { width: 90%; height: 400px; margin: 20px auto; background: #2d2d2d; border-radius: 10px; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>🌡️ 智能机房环境监控系统 (真实数据)</h1>
+    <div>
+        <div class="card"><h3>当前温度</h3><div id="tempDisplay" class="value">--</div></div>
+        <div class="card"><h3>当前湿度</h3><div id="humiDisplay" class="value">--</div></div>
+        <div class="card"><h3>系统状态</h3><div id="statusDisplay" class="value" style="font-size: 24px; margin-top:15px;">等待数据...</div></div>
+    </div>
+    <div id="main"></div>
+    <script>
+        var myChart = echarts.init(document.getElementById('main'));
+        var option = {
+            title: { text: '实时温湿度趋势', textStyle: { color: '#fff' }, left: 'center' },
+            tooltip: { trigger: 'axis' },
+            legend: { data: ['温度 (℃)', '湿度 (%)'], textStyle: { color: '#fff' }, top: 30 },
+            xAxis: { type: 'category', data: [], axisLabel: { color: '#aaa' }, axisLine: { lineStyle: { color: '#555' } } },
+            yAxis: { type: 'value', axisLabel: { color: '#aaa' }, splitLine: { lineStyle: { color: '#333' } } },
+            series: [
+                { name: '温度 (℃)', type: 'line', data: [], smooth: true, itemStyle: { color: '#ff9800' } },
+                { name: '湿度 (%)', type: 'line', data: [], smooth: true, itemStyle: { color: '#03a9f4' } }
+            ]
+        };
+        myChart.setOption(option);
+
+        let timeData = []; let tempData = []; let humiData = [];
+
+        function fetchRealData() {
+            fetch('http://127.0.0.1:5000/api/data')
+                .then(response => { if (!response.ok) throw new Error("网络请求失败"); return response.json(); })
+                .then(data => {
+                    let now = new Date();
+                    let timeStr = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0') + ":" + now.getSeconds().toString().padStart(2, '0');
+                    let tempEl = document.getElementById('tempDisplay');
+                    let humiEl = document.getElementById('humiDisplay');
+                    let statusEl = document.getElementById('statusDisplay');
+
+                    tempEl.innerText = data.temp.toFixed(1) + " ℃";
+                    humiEl.innerText = data.humi.toFixed(1) + " %";
+                    statusEl.innerText = data.status;
+
+                    if (data.temp >= 26.0 || data.status.includes("告警")) {
+                        statusEl.className = "value alarm"; tempEl.className = "value alarm";
+                    } else {
+                        statusEl.className = "value"; tempEl.className = "value";
+                    }
+
+                    timeData.push(timeStr); tempData.push(data.temp); humiData.push(data.humi);
+                    if (timeData.length > 10) { timeData.shift(); tempData.shift(); humiData.shift(); }
+
+                    myChart.setOption({ xAxis: { data: timeData }, series: [{ data: tempData }, { data: humiData }] });
+                })
+                .catch(error => {
+                    console.error("获取数据失败，请检查后端是否启动:", error);
+                    document.getElementById('statusDisplay').innerText = "连接后端失败";
+                    document.getElementById('statusDisplay').className = "value alarm";
+                });
+        }
+        setInterval(fetchRealData, 3000);
+        fetchRealData();
+    </script>
+</body>
+</html>
